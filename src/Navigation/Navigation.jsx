@@ -3,25 +3,16 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import { Link } from 'react-router-dom';
+import NavigationButtons from './NavigationButton';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useNavigate } from 'react-router-dom';
 
 function Navigation() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const menuItems = [
-    { label: 'Men', path: '/products/men' },
-    { label: 'Women', path: '/products/women' },
-    { label: 'Sneaker', path: '/products/sneakers' },
-    { label: 'Orders', path: '/orders' },
-    { label: 'Cart', path: '/cart' },
-  ];
+  const navigate = useNavigate();
 
   return (
     <>
@@ -41,11 +32,16 @@ function Navigation() {
               variant="h6"
               component="div"
               sx={{ flexGrow: 1 }}
-              className="flex justify-center"
+              className="flex justify-center hover:scale-95 transform "
             >
               The Souled Store
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Box color="inherit">
+              <ShoppingCartIcon
+                onClick={()=>navigate('/cart')}
+                className="hover:scale-90"
+              />
+            </Box>
           </Toolbar>
         </AppBar>
       </Box>
@@ -55,23 +51,18 @@ function Navigation() {
         onClose={() => setDrawerOpen(false)}
       >
         <Box>
-          <List>
-            {menuItems.map((item, index) => (
-              <ListItem
-                button
-                key={index}
-                component={Link}
-                to={item.path}
-                onClick={() => setDrawerOpen(false)}
-                sx={{
-                  color: 'secondary.main',
-                  width: '20rem',
-                }}
-              >
-                <ListItemText primary={item.label} />
-              </ListItem>
-            ))}
-          </List>
+          <Typography
+            variant="h6"
+            sx={{
+              my: 2,
+              textAlign: 'center',
+              color: 'primary.main',
+              fontWeight: 'bold',
+            }}
+          >
+            The Souled Store
+          </Typography>
+          <NavigationButtons />
         </Box>
       </Drawer>
     </>

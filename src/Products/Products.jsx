@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Elements from './Elements';
 import axios from 'axios';
+import NavigationButton from '../Navigation/NavigationButton';
 function Products() {
   const { section } = useParams();
   useEffect(() => {
@@ -42,18 +43,23 @@ function Products() {
   };
 
   return (
-    <div className="md:px-50">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mt-20">
-        {data.map((photoData) => {
-          return (
-            <Elements
-              key={photoData.id}
-              url={photoData.src.medium}
-              alt={photoData.photographer}
-              description={photoData.alt}
-            />
-          );
-        })}
+    <div>
+      <div className="fixed mt-14 md:mt-16 w-full bg-white z-10">
+        <NavigationButton />
+      </div>
+      <div className="md:px-50 ">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 pt-30">
+          {data.map((photoData) => {
+            return (
+              <Elements
+                key={photoData.id}
+                url={photoData.src.medium}
+                alt={photoData.photographer}
+                description={photoData.alt}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
