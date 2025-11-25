@@ -2,14 +2,25 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-export default function NavigationButton() {
-  const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+export default function NavigationButton() {
   const navigate = useNavigate();
+
+  // ✅ read which section is active
+  const currentSection = useSelector((state) => state.counter.query);
+
+  // ✅ convert to tab index (visual only)
+  const tabIndex =
+    currentSection === 'men'
+      ? 0
+      : currentSection === 'women'
+      ? 1
+      : currentSection === 'sneakers'
+      ? 2
+      : false; // none selected if not matched
+
   return (
     <Box
       sx={{
@@ -20,8 +31,7 @@ export default function NavigationButton() {
       }}
     >
       <Tabs
-        value={value}
-        onChange={handleChange}
+        value={tabIndex} // ✅ controls the visual selection
         centered
         sx={{
           '& .MuiTabs-indicator': {
@@ -36,9 +46,9 @@ export default function NavigationButton() {
           },
         }}
       >
-        <Tab onClick={() => navigate('/products/men')} label="MEN" />
-        <Tab onClick={() => navigate('/products/women')} label="WOMEN" />
-        <Tab onClick={() => navigate('/products/sneakers')} label="SNEAKERS" />
+        <Tab label="MEN" onClick={() => navigate('/products/men')} />
+        <Tab label="WOMEN" onClick={() => navigate('/products/women')} />
+        <Tab label="SNEAKERS" onClick={() => navigate('/products/sneakers')} />
       </Tabs>
     </Box>
   );

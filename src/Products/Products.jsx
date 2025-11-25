@@ -7,17 +7,23 @@ import axios from 'axios';
 import NavigationButton from '../Navigation/NavigationButton';
 import HeroElement from './HeroElement';
 import Categories from './Categories';
+import { setQuery } from '../ReduxStore/counterSlice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 function Products() {
+  const dispatch = useDispatch();
   const { section } = useParams();
+  let query = useSelector((state) => state.counter.query);
   useEffect(() => {
-    fetchData(section);
+    dispatch(setQuery(section));
+
+    fetchData(query);
   }, [section]);
   const [data, setData] = useState([]);
 
-  const fetchData = async (section) => {
+  const fetchData = async (query) => {
     try {
-      let query = 'men';
-      switch (section) {
+      switch (query) {
         case 'men':
           query = 'men zara';
           break;

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
@@ -11,7 +10,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { Paper } from '@mui/material';
 import Menu from './Menu';
-import SearchIcon from '@mui/icons-material/Search';
+import SearchingIcon from '../Search/SearchingIcon';
+import Categories from '../Products/Categories';
+import CloseIcon from '@mui/icons-material/Close';
 
 function Navigation() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -21,7 +22,7 @@ function Navigation() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="fixed" sx={{ boxShadow: 'none' }}>
-          <Toolbar>
+          <Toolbar className="flex justify-between">
             <IconButton
               size="large"
               edge="start"
@@ -31,17 +32,14 @@ function Navigation() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1 }}
-              className="flex justify-center hover:scale-95 transform cursor-pointer"
+            <div
+              className=" hover:scale-95 transform cursor-pointer text-lg"
               onClick={() => navigate('/products/men')}
             >
-              The ROY Store
-            </Typography>
+              The Roy Store
+            </div>
             <Box color="inherit">
-              <SearchIcon className='mr-4'/>
+              <SearchingIcon />
               <ShoppingCartIcon
                 onClick={() => navigate('/cart')}
                 className="hover:scale-90"
@@ -55,20 +53,27 @@ function Navigation() {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       >
-        <Box>
-          <Paper
+        <Box className="w-sm md:w-md lg:w-lg">
+          <div className="flex justify-end"></div>
+          <Box
             elevation={10}
-            variant="h6"
             sx={{
               my: 2,
               textAlign: 'center',
               color: 'primary.main',
               fontWeight: 'bold',
             }}
+            className="flex justify-between"
           >
-            The ROY Store
-          </Paper>
+            <div></div>
+            <div>The Roy Store</div>
+            <CloseIcon
+              className="mr-4 mt-1 cursor-pointer"
+              onClick={() => setDrawerOpen(false)}
+            />
+          </Box>
           <NavigationButtons />
+          <Categories />
           <Menu />
         </Box>
       </Drawer>
