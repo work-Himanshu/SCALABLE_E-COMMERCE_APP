@@ -9,6 +9,7 @@ import Footer from './Footer/Footer';
 import Search from './Search/Search';
 import { Provider } from 'react-redux';
 import store from './ReduxStore/store';
+import Item from './Item/Item';
 function App() {
   const [query, setQuery] = useState('men');
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/products/search" element={<Search />} />
+        <Route path="/products/:section/:item" element={<Item />} />
       </Routes>
       <Footer />
     </Provider>

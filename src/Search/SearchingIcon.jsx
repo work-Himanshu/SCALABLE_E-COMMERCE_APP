@@ -1,26 +1,36 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import SearchingIcon from '@mui/icons-material/Search';
 import Menu from '@mui/material/Menu';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useDispatch } from 'react-redux';
+import { setSearch } from '../ReduxStore/searchSlice';
 import { useNavigate } from 'react-router-dom';
+
 function SearchIcon() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    navigate('/products/search');
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  const handleSelect = (event, value) => {
+    if (value) {
+      dispatch(setSearch(value.title));
+      navigate('/products/search');
+      handleClose();
+    }
+  };
+
   const categories = [
-    // --- MEN CLOTHING ---
     { title: 'Men Jackets' },
     { title: 'Men Bomber Jackets' },
     { title: 'Men Denim Jackets' },
@@ -46,49 +56,17 @@ function SearchIcon() {
     { title: 'Men Joggers' },
     { title: 'Men Shorts' },
     { title: 'Men Track Pants' },
-
-    // --- WOMEN CLOTHING ---
     { title: 'Women Dresses' },
-    { title: 'Women Maxi Dresses' },
-    { title: 'Women Bodycon Dresses' },
     { title: 'Women Tops' },
-    { title: 'Women Crop Tops' },
-    { title: 'Women Tunics' },
-    { title: 'Women Kurtis' },
-    { title: 'Women Anarkali Kurtis' },
     { title: 'Women Sarees' },
-    { title: 'Women Silk Sarees' },
-    { title: 'Women Party Wear Sarees' },
     { title: 'Women Ethnic Wear' },
-    { title: 'Women Lehenga Choli' },
-    { title: 'Women Skirts' },
     { title: 'Women Jeans' },
-    { title: 'Women Jeggings' },
-    { title: 'Women Palazzo Pants' },
-    { title: 'Women Jumpsuits' },
-    { title: 'Women Shrugs' },
-    { title: 'Women Cardigans' },
     { title: 'Women Winter Jackets' },
-
-    // --- SNEAKERS & FOOTWEAR ---
     { title: 'Sneakers' },
-    { title: 'High-Top Sneakers' },
-    { title: 'Chunky Sneakers' },
-    { title: 'Minimal Sneakers' },
     { title: 'Running Shoes' },
-    { title: 'Training Shoes' },
-    { title: 'Casual Shoes' },
     { title: 'Canvas Shoes' },
-    { title: 'Slip-On Shoes' },
     { title: 'Sports Shoes' },
     { title: 'Walking Shoes' },
-
-    // --- ACCESSORIES (OPTIONAL BUT USEFUL) ---
-    { title: 'Men Belts' },
-    { title: 'Women Handbags' },
-    { title: 'Men Caps' },
-    { title: 'Women Scarves' },
-    { title: 'Socks' },
     { title: 'Watches' },
     { title: 'Sunglasses' },
     { title: 'Backpacks' },
@@ -97,39 +75,27 @@ function SearchIcon() {
   return (
     <>
       <SearchingIcon
-        id="demo-positioned-button"
-        aria-controls={open ? 'demo-positioned-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        className="mr-4 hover:scale-90"
+        className="mr-4 hover:scale-90 cursor-pointer"
       />
+
       <Menu
-        className="transition"
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       >
-        <Stack spacing={3} className="w-screen scale-90 justify-self-center">
-          <Autocomplete
+        <div spacing={2} className="w-screen mx-4 justify-center">
+            <Autocomplete
             options={categories}
             getOptionLabel={(option) => option.title}
-            renderValue={(value, getItemProps) => (
-              <Chip label={value.title} {...getItemProps()} />
+            onChange={handleSelect}
+            renderInput={(params) => (
+              <TextField {...params} label="Search categories" />
             )}
-            renderInput={(params) => <TextField {...params} label=" " />}
           />
-        </Stack>
+        </div>
       </Menu>
     </>
   );
