@@ -3,6 +3,19 @@ import { useState, useEffect } from 'react';
 import CardMedia from '@mui/material/CardMedia';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
+
+export function Animations() {
+  return (
+    <Box sx={{ width: 300 }}>
+      <Skeleton />
+      <Skeleton animation="wave" />
+      <Skeleton animation={false} />
+    </Box>
+  );
+}
+
 export default function HeroElement() {
   const [hero, setHero] = useState(null);
   const location = useLocation();
@@ -45,7 +58,7 @@ export default function HeroElement() {
   if (!hero)
     return (
       <Card>
-        <p>Loading...</p>
+        <Animations />
       </Card>
     );
 

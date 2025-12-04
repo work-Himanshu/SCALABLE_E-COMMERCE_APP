@@ -8,7 +8,6 @@ import Drawer from '@mui/material/Drawer';
 import NavigationButtons from './NavigationButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
-import { Paper } from '@mui/material';
 import Menu from './Menu';
 import SearchingIcon from '../Search/SearchingIcon';
 import Categories from '../Products/Categories';

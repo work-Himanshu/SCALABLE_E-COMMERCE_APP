@@ -17,9 +17,11 @@ export default function Elements({ url, alt, description, price }) {
       />
       <CardContent>
         <div className="flex justify-between mb-2">
-          <Typography gutterBottom variant="h7" className="w-3" component="div">
-            {alt || 'Person'}
-          </Typography>
+          <div>
+            <Typography gutterBottom classes={{ root: 'w-1' }} component="div">
+              {alt || 'Person'}
+            </Typography>
+          </div>
           <Button variant="secondary" className="p-2" size="small">
             ₹ {price} /-
           </Button>

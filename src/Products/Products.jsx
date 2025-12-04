@@ -1,35 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Elements from './Elements';
 import axios from 'axios';
-import NavigationButton from '../Navigation/NavigationButton';
-import HeroElement from './HeroElement';
-import Categories from './Categories';
-import { setQuery } from '../ReduxStore/counterSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { setQuery } from '../ReduxStore/counterSlice';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
+
+// 🔥 Lazy Loaded Components
+const Elements = React.lazy(() => import('./Elements'));
+const HeroElement = React.lazy(() => import('./HeroElement'));
+const Categories = React.lazy(() => import('./Categories'));
+const NavigationButton = React.lazy(() =>
+  import('../Navigation/NavigationButton')
+);
+
+// Reusable Skeleton Card for Product Grid
+function CardSkeleton() {
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Skeleton variant="rectangular" height={180} />
+      <Skeleton />
+      <Skeleton width="60%" />
+    </Box>
+  );
+}
 
 function Products() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { section } = useParams();
   const query = useSelector((state) => state.counter.query);
+
   const [data, setData] = useState([]);
 
-  // Update Redux when URL section changes
+  // Update Redux when URL changes
   useEffect(() => {
     dispatch(setQuery(section));
   }, [section]);
 
-  // Fetch Data when query updates
+  // Fetch data when query changes
   useEffect(() => {
-    if (query) {
-      fetchData(query);
-    }
+    if (query) fetchData(query);
   }, [query]);
 
   const fetchData = async (queryVal) => {
     try {
-      // transform based on section
       switch (queryVal) {
         case 'men':
           queryVal = 'men zara';
@@ -51,14 +66,13 @@ function Products() {
       });
 
       setData(response.data.photos);
-
     } catch (err) {
       console.log(err);
     }
   };
 
+  // Card click
   const handleCardClick = (photoData) => {
-    // Build readable URL
     const itemSlug = photoData.photographer
       .toLowerCase()
       .replace(/ /g, '-')
@@ -69,29 +83,47 @@ function Products() {
 
   return (
     <div>
-      <div className="fixed mt-14 md:mt-16 w-full bg-white z-10">
-        <NavigationButton />
-      </div>
+      {/* 🔥 Navigation Button Lazy Loaded */}
+      <Suspense fallback={<Skeleton height={50} />}>
+        <div className="fixed mt-14 md:mt-16 w-full bg-white z-10">
+          <NavigationButton />
+        </div>
+      </Suspense>
 
-      <div className="md:px-50 pt-30">
-        <HeroElement />
-        <Categories />
+      <div className="md:px-50 pt-26">
+        {/* 🔥 Hero Section Lazy Loaded */}
+        <Suspense fallback={<Skeleton height={200} />}>
+          <HeroElement />
+        </Suspense>
 
+        {/* 🔥 Categories Lazy Loaded */}
+        <Suspense fallback={<Skeleton height={150} />}>
+          <Categories />
+        </Suspense>
+
+        {/* 🔥 Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 ">
-          {data.map((photoData) => (
-            <div
-              key={photoData.id}
-              onClick={() => handleCardClick(photoData)}
-              className="cursor-pointer"
-            >
-              <Elements
-                url={photoData.src.medium}
-                alt={photoData.photographer}
-                description={photoData.alt}
-                price={photoData.width}
-              />
-            </div>
-          ))}
+          {data.length === 0
+            ? Array(8)
+                .fill(0)
+                .map((_, i) => <CardSkeleton key={i} />)
+            : data.map((photoData) => (
+                <div
+                  key={photoData.id}
+                  onClick={() => handleCardClick(photoData)}
+                  className="cursor-pointer"
+                >
+                  {/* 🔥 Lazy load product cards individually */}
+                  <Suspense fallback={<CardSkeleton />}>
+                    <Elements
+                      url={photoData.src.medium}
+                      alt={photoData.photographer}
+                      description={photoData.alt}
+                      price={photoData.width}
+                    />
+                  </Suspense>
+                </div>
+              ))}
         </div>
       </div>
     </div>
