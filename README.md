@@ -1,16 +1,127 @@
-# React + Vite
+# The Souled Store – React Frontend Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce frontend built using React, Redux Toolkit, Material UI (MUI), and Tailwind CSS.  
+The application fetches product-style images from the Pexels Stock Image API.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation and Setup
 
-## React Compiler
+### 1. Clone the repository
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+git clone https://github.com/work-Himanshu/e-commerce-web
+cd souled-store-clone
+```
 
-## Expanding the ESLint configuration
+### 2. Install dependencies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+### 3. Create the environment file
+
+Create a `.env` file in the root:
+
+```bash
+touch .env
+```
+
+Add the following inside:
+
+```
+VITE_PEXELS_API_KEY=your_pexels_api_key
+```
+
+Get your API key from:  
+https://www.pexels.com/api/
+
+### 4. Run the development server
+
+```bash
+npm run dev
+```
+
+---
+
+## Features
+
+- Responsive UI
+- Redux Toolkit state management
+- MUI + Tailwind hybrid styling
+- Search using Pexels API
+- Category-based product browsing
+- Product details page
+- Clean modern folder structure
+
+---
+
+## Example Code
+
+### API Client
+
+```javascript
+import axios from "axios";
+
+const apiClient = axios.create({
+  baseURL: "https://api.pexels.com/v1",
+  headers: {
+    Authorization: import.meta.env.VITE_PEXELS_API_KEY,
+  },
+});
+
+export const fetchProducts = async (query) => {
+  const response = await apiClient.get(`/search?query=${query}&per_page=30`);
+  return response.data.photos;
+};
+```
+
+### Redux Slice
+
+```javascript
+import { createSlice } from "@reduxjs/toolkit";
+
+export const productSlice = createSlice({
+  name: "products",
+  initialState: {
+    list: [],
+    loading: false,
+  },
+  reducers: {
+    setProducts: (state, action) => {
+      state.list = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+  },
+});
+
+export const { setProducts, setLoading } = productSlice.actions;
+export default productSlice.reducer;
+```
+
+---
+
+## Screenshots
+
+Replace with your own images:
+
+```
+![Home Page](assets/screenshots/home.png)
+![Category Page](assets/screenshots/category.png)
+![Product Details](assets/screenshots/details.png)
+```
+
+---
+
+## Future Improvements
+
+- Infinite scroll
+- Cart system
+- Authentication
+- Backend integration
+
+---
+
