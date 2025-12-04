@@ -106,10 +106,10 @@ export default productSlice.reducer;
 
 ## Screenshots
 
-Replace with your own images:
+These are a few Images of the App
 
 ```
-![Home Page](public/image.png)
+[Home Page](public/image.png)
 ![Category Page](assets/screenshots/category.png)
 ![Product Details](assets/screenshots/details.png)
 ```
