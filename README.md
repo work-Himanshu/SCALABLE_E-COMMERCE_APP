@@ -1,4 +1,4 @@
-# The Souled Store – React Frontend Clone
+# The Roy Store – React Frontend Clone
 
 A modern e-commerce frontend built using React, Redux Toolkit, Material UI (MUI), and Tailwind CSS.  
 The application fetches product-style images from the Pexels Stock Image API.
